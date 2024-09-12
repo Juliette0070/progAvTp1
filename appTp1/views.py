@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from appTp1.models import Product, Productitem
+from appTp1.models import Product, ProductItem
 
 # Create your views here.
 
@@ -33,7 +33,7 @@ def ListProducts(request):
     prdcts = Product.objects.all()
     liste_prdts = ""
     for p in prdcts:
-        liste_prdts += "<li><a href='/appTp1/items/"+str(p.id)+"'>"+p.name+" ("+str(p.prixHT)+"€)"+"</a></li>"
+        liste_prdts += "<li><a href='/appTp1/items/"+str(p.id)+"'>"+p.name+" ("+str(p.price_ht)+"€)"+"</a></li>"
     if liste_prdts == "":
         liste_prdts = "<li>Aucun produit</li>"
     return HttpResponse(
@@ -50,7 +50,7 @@ def ListItemsProduct(request, id):
         product = Product.objects.get(id=id)
     except Product.DoesNotExist:
         return HttpResponse("Ce produit n'existe pas")
-    prdcts = Productitem.objects.filter(product=product)
+    prdcts = ProductItem.objects.filter(product=product)
     liste_prdts = ""
     for p in prdcts:
         liste_prdts += "<li style='color:"+p.color+"';>"+p.color+"</li>"
@@ -59,8 +59,8 @@ def ListItemsProduct(request, id):
     return HttpResponse(
         "<h1>Produit: "+product.name+"</h1>"
         "<a href='/appTp1/'>Home</a> - <a href='/appTp1/products'>Products</a>"
-        "<p>Prix HT: "+str(product.prixHT)+"€</p>"
-        "<p>Date de fabrication: "+str(product.date_de_fabrication)+"</p>"
+        "<p>Prix HT: "+str(product.price_ht)+"€</p>"
+        "<p>Date de fabrication: "+str(product.date_creation)+"</p>"
         "<p>Liste des déclinaisons du produit:</p>"
         "<ul>"
         f"{liste_prdts}"

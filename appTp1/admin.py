@@ -6,6 +6,7 @@ from .models import Product, ProductAttribute, ProductAttributeValue, ProductIte
 class ProductItemAdmin(admin.TabularInline):
     model = ProductItem
     filter_vertical = ('attributes',)
+    raw_id_fields = ['attributes']
 
 
 class ProductFilter(admin.SimpleListFilter):
@@ -48,6 +49,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     def tax(self, instance):
         return (instance.price_ttc / instance.price_ht) - 1
+
     tax.short_description = "Taxes(%)"
     tax.admin_order_field = "price_ht"
 

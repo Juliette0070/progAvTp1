@@ -5,11 +5,12 @@
         <meta charset="UTF-8">
         <title>{% block title %}AppTp1{% endblock %}</title>
         {% block styles %}
-        <link rel="stylesheet" href="{% static 'styles.css' %}">
         <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
         {% endblock %}
     </head>
     <body>
+        {% block nav %}
         <nav>
             <ul>
                 <li><a href='/appTp1/'>Home</a></li>
@@ -19,6 +20,9 @@
                 <li><a href='/appTp1/products'>Products</a></li>
             </ul>
         </nav>
-        {% block content %}{% endblock %}
+        {% endblock %}
+        <main>
+            {% block content %}{% endblock %}
+        </main>
     </body>
 </html>

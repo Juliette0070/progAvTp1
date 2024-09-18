@@ -1,8 +1,13 @@
+<!DOCTYPE html>
 {% load static %}
-<html>
+<html lang="fr">
     <head>
-        <title>Mon app DJANGO</title>
+        <meta charset="UTF-8">
+        <title>{% block title %}AppTp1{% endblock %}</title>
+        {% block styles %}
         <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+        {% endblock %}
     </head>
     <body>
         <nav>

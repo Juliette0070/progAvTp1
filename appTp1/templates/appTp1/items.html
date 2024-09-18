@@ -1,22 +1,17 @@
-<html>
-    <head>
-    <title>Mon app DJANGO</title>
-    </head>
-    <body>
-        <h1>Produit: product.name</h1>
-        <a href='/appTp1/'>Home</a> - <a href='/appTp1/products'>Products</a>
-        <p>Prix HT: {{product.price_ht}}€</p>
-        <p>Prix TTC: {{product.price_ttc}}€</p>
-        <p>Date de fabrication: {{product.date_creation}}</p>
-        <p>Liste des déclinaisons du produit:</p>
-        <ul>
-            {% if declinaisons|length == 0 %}
-                <li>Aucune déclinaison</li>
-            {% else %}
-                {% for d in declinaisons %}
-                    <li>{{d.color}}</li>
-                {% endfor %}
-            {% endif %}
-        </ul>
-    </body>
-</html>
+{% extends 'appTp1/base.html' %}
+{% block content %}
+<h1>Produit: {{product.name}}</h1>
+<p>Prix HT: {{product.price_ht}}€</p>
+<p>Prix TTC: {{product.price_ttc}}€</p>
+<p>Date de fabrication: {{product.date_creation}}</p>
+<p>Liste des déclinaisons du produit:</p>
+<ul>
+    {% if declinaisons|length == 0 %}
+        <li>Aucune déclinaison</li>
+    {% else %}
+        {% for d in declinaisons %}
+            <li><span style="color: {{ d.color }}">{{ d.color }}</span></li>
+        {% endfor %}
+    {% endif %}
+</ul>
+{% endblock %}

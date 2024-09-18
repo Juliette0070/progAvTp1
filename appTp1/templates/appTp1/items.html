@@ -11,7 +11,7 @@
         <li>Aucune déclinaison</li>
     {% else %}
         {% for d in declinaisons %}
-            <li><span style="color: {{ d.color }}">{{ d.color }}</span></li>
+            <li><span style="color: {{ d.color }}">{{ d.color }}</span> ({{ d.code }})</li>
         {% endfor %}
     {% endif %}
 </ul>

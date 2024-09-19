@@ -57,7 +57,7 @@ ROOT_URLCONF = 'progAvTp1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'templates', BASE_DIR/'templates/appTp1'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

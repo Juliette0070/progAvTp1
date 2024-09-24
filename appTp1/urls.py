@@ -12,7 +12,7 @@ urlpatterns = [
     path('home/', views.HomeView.as_view(), name='home'),
     path('about/', views.AboutView.as_view(), name='about'),
     path('contact/', views.ContactView.as_view(), name='contact'),
-    path('hello/<name>', views.HelloView.as_view(), name='hello'),
+    path('home/<name>', views.HomeView.as_view(), name='home'),
     path('products/', views.ListProducts, name='products'),
     path('items/<id>', views.ListItemsProduct, name='items'),
 ]

@@ -22,7 +22,8 @@ class HomeView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['titreh1'] = "Hello DJANGO"
+        name = self.kwargs.get('name', "DJANGO")
+        context['titreh1'] = "Hello " + name
         return context
     def post(self, request, **kwargs):
         return render(request, self.template_name)
@@ -41,15 +42,6 @@ class ContactView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ContactView, self).get_context_data(**kwargs)
         context['titreh1'] = "Contact us..."
-        return context
-    def post(self, request, **kwargs):
-        return render(request, self.template_name)
-
-class HelloView(TemplateView):
-    template_name = "appTp1/home.html"
-    def get_context_data(self, **kwargs):
-        context = super(HelloView, self).get_context_data(**kwargs)
-        context['titreh1'] = "Hello " + self.kwargs.get('name')
         return context
     def post(self, request, **kwargs):
         return render(request, self.template_name)

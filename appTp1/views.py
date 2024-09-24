@@ -22,6 +22,14 @@ from appTp1.models import Product, ProductItem
     prdcts = Product.objects.all()
     return render(request, "appTp1/list_products.html", {"prdcts": prdcts})"""
 
+"""def ListItemsProduct(request, id):
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return HttpResponse("Ce produit n'existe pas")
+    declinaisons = ProductItem.objects.filter(product=product)
+    return render(request, "appTp1/items.html", {"product": product, "declinaisons": declinaisons})"""
+
 class HomeView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -70,10 +78,13 @@ class ProductDetailView(DetailView):
         context['titremenu'] = "Détail produit"
         return context
 
-def ListItemsProduct(request, id):
-    try:
-        product = Product.objects.get(id=id)
-    except Product.DoesNotExist:
-        return HttpResponse("Ce produit n'existe pas")
-    declinaisons = ProductItem.objects.filter(product=product)
-    return render(request, "appTp1/items.html", {"product": product, "declinaisons": declinaisons})
+class ProductItemListView(ListView):
+    model = ProductItem
+    template_name = "appTp1/items.html"
+    context_object_name = "declinaisons"
+    def get_queryset(self):
+        return ProductItem.objects.order_by('color')
+    def get_context_data(self, **kwargs):
+        context = super(ProductItemListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des déclinaisons"
+        return context

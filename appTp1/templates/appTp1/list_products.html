@@ -3,8 +3,12 @@
 {% block content %}
 <h1>{{ titremenu }} ({{ prdcts | length }})</h1>
 <ul>
-    {% for p in prdcts %}
-        <li><a href="{% url 'product-detail' p.id %}">{{p.name}}</a> ({{p.price_ht}}€)</li>
-    {% endfor %}
+    {% if prdcts|length == 0 %}
+        <li>Aucun produit</li>
+    {% else %}
+        {% for p in prdcts %}
+            <li><a href="{% url 'product-detail' p.id %}">{{p.name}}</a> ({{p.price_ht}}€)</li>
+        {% endfor %}
+    {% endif %}
 </ul>
 {% endblock %}

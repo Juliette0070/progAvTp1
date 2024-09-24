@@ -4,7 +4,7 @@
 <h1>{{ titremenu }} ({{ prdcts | length }})</h1>
 <ul>
     {% for p in prdcts %}
-        <li><a href='/appTp1/items/{{p.id}}'>{{p.name}}</a> ({{p.price_ht}}€)</li>
+        <li><a href="{% url 'product-detail' p.id %}">{{p.name}}</a> ({{p.price_ht}}€)</li>
     {% endfor %}
 </ul>
 {% endblock %}

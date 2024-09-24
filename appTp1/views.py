@@ -67,7 +67,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Détails du produit"
+        context['titremenu'] = "Détail produit"
         return context
 
 def ListItemsProduct(request, id):

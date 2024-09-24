@@ -1,1 +1,3 @@
-__pycache__/
+__pycache__/*
+appTp1/__pycache__/*
+*.pyc

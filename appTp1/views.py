@@ -18,6 +18,10 @@ from appTp1.models import Product, ProductItem
 """def hello(request, name):
     return render(request, "appTp1/hello.html", {"name": name})"""
 
+"""def ListProducts(request):
+    prdcts = Product.objects.all()
+    return render(request, "appTp1/list_products.html", {"prdcts": prdcts})"""
+
 class HomeView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -46,9 +50,25 @@ class ContactView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
-def ListProducts(request):
-    prdcts = Product.objects.all()
-    return render(request, "appTp1/list_products.html", {"prdcts": prdcts})
+class ProductListView(ListView):
+    model = Product
+    template_name = "appTp1/list_products.html"
+    context_object_name = "prdcts"
+    def get_queryset(self):
+        return Product.objects.order_by('price_ttc')
+    def get_context_data(self, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des produits"
+        return context
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "appTp1/detail_product.html"
+    context_object_name = "product"
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détails du produit"
+        return context
 
 def ListItemsProduct(request, id):
     try:

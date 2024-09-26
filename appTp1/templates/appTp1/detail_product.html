@@ -11,4 +11,14 @@
         <li>Prix TTC: {{ product.price_ttc }}</li>
         <li>Date de création: {{ product.date_creation }}</li>
     </ul>
+    <h3>Déclinaisons</h3>
+    <ul>
+        {% if declinaisons|length == 0 %}
+            <li>Aucune déclinaison</li>
+        {% else %}
+            {% for d in declinaisons %}
+                <li><a href="{% url 'item-detail' d.id %}">{{ d.code }}</a></li>
+            {% endfor %}
+        {% endif %}
+    </ul>
 {% endblock %}

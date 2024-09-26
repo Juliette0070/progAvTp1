@@ -76,15 +76,25 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         context['titremenu'] = "Détail produit"
+        context['declinaisons'] = ProductItem.objects.filter(product=self.object)
         return context
 
 class ProductItemListView(ListView):
     model = ProductItem
-    template_name = "appTp1/items.html"
+    template_name = "appTp1/list_items.html"
     context_object_name = "declinaisons"
     def get_queryset(self):
-        return ProductItem.objects.order_by('color')
+        return ProductItem.objects.order_by('code')
     def get_context_data(self, **kwargs):
         context = super(ProductItemListView, self).get_context_data(**kwargs)
         context['titremenu'] = "Liste des déclinaisons"
+        return context
+
+class ProductItemDetailView(DetailView):
+    model = ProductItem
+    template_name = "appTp1/detail_item.html"
+    context_object_name = "item"
+    def get_context_data(self, **kwargs):
+        context = super(ProductItemDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail déclinaison"
         return context

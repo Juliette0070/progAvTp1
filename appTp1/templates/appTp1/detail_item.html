@@ -1,0 +1,16 @@
+{% extends 'appTp1/base.html' %}
+{% block title %}Detail Item{% endblock %}
+{% block content %}
+    <h1>{{ titremenu }}</h1>
+    <h2><a href="{% url 'product-detail' item.product.id %}">{{ item.product.name }}</a> {{ item.code }}</h2>
+    <p>Attributs:</p>
+    <ul>
+        {% if item.attributes.all|length == 0 %}
+            <li>Aucun attribut</li>
+        {% else %}
+            {% for a in item.attributes.all %}
+                <li>{{ a.product_attribute.name }}: {{ a.value }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+{% endblock %}

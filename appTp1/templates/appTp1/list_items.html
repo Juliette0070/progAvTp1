@@ -6,7 +6,7 @@
         <li>Aucune déclinaison</li>
     {% else %}
         {% for d in declinaisons %}
-            <li>{{ d.product.name }} ({{ d.code }})</li>
+            <li><a href="{% url 'item-detail' d.id %}">{{ d.product.name }}</a> ({{ d.code }})</li>
         {% endfor %}
     {% endif %}
 </ul>

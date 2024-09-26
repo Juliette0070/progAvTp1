@@ -1,34 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import *
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import authenticate, login
 
 from appTp1.models import Product, ProductItem
 
 # Create your views here.
-
-"""def home(request):
-    return render(request, "appTp1/home.html")"""
-
-"""def about(request):
-    return render(request, "appTp1/about.html")"""
-
-"""def contact(request):
-    return render(request, "appTp1/contact.html")"""
-
-"""def hello(request, name):
-    return render(request, "appTp1/hello.html", {"name": name})"""
-
-"""def ListProducts(request):
-    prdcts = Product.objects.all()
-    return render(request, "appTp1/list_products.html", {"prdcts": prdcts})"""
-
-"""def ListItemsProduct(request, id):
-    try:
-        product = Product.objects.get(id=id)
-    except Product.DoesNotExist:
-        return HttpResponse("Ce produit n'existe pas")
-    declinaisons = ProductItem.objects.filter(product=product)
-    return render(request, "appTp1/items.html", {"product": product, "declinaisons": declinaisons})"""
 
 class HomeView(TemplateView):
     template_name = "appTp1/home.html"
@@ -98,3 +76,15 @@ class ProductItemDetailView(DetailView):
         context = super(ProductItemDetailView, self).get_context_data(**kwargs)
         context['titremenu'] = "Détail déclinaison"
         return context
+
+class ConnectView(LoginView):
+    template_name = "appTp1/login.html"
+    def post(self, request, **kwargs):
+        username = request.POST.get('username', False)
+        password = request.POST.get('password', False)
+        user = authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            return render(request, "appTp1/home.html", {"titreh1": "Hello " + username + ", you're connected"})
+        else:
+            return render(request, 'appTp1/register.html')

@@ -3,12 +3,6 @@ from . import views
 from django.views.generic import *
 
 urlpatterns = [
-    # path('', views.home, name='home'),
-    # path('home', views.home, name='home'),
-    # path('about/', views.about, name='about'),
-    # path('contact/', views.contact, name='contact'),
-    # path('hello/<name>', views.hello, name='hello'),
-    # path('products/', views.ListProducts, name='products'),
     path('', views.HomeView.as_view(), name='home'),
     path('home/', views.HomeView.as_view(), name='home'),
     path('home/<name>', views.HomeView.as_view(), name='home'),
@@ -18,4 +12,7 @@ urlpatterns = [
     path('product/<pk>', views.ProductDetailView.as_view(), name='product-detail'),
     path('items/list', views.ProductItemListView.as_view(), name='items'),
     path('item/<pk>', views.ProductItemDetailView.as_view(), name='item-detail'),
+    path('login/', views.ConnectView.as_view(), name='login'),
+    path('register/', views.RegisterView.as_view(), name='register'),
+    path('logout/', views.DisconnectView.as_view(), name='logout'),
 ]

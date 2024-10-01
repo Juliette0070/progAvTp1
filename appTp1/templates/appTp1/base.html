@@ -13,12 +13,18 @@
         {% block nav %}
         <nav>
             <ul>
-                <li><a href='/appTp1/'>Home</a></li>
-                <li><a href='/appTp1/home/you'>Hello</a></li>
-                <li><a href='/appTp1/contact'>Contact</a></li>
-                <li><a href='/appTp1/about'>About</a></li>
-                <li><a href='/appTp1/products/list'>Products</a></li>
-                <li><a href='/appTp1/items/list'>Items</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'home' name='you' %}">Hello</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'items' %}">Items</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
             </ul>
         </nav>
         {% endblock %}

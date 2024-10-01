@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.views.generic import *
 from django.contrib.auth.views import LoginView
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 
+from appTp1.forms import ContactUsForm
 from appTp1.models import Product, ProductItem
 
 # Create your views here.
@@ -29,12 +30,13 @@ class AboutView(TemplateView):
 
 class ContactView(TemplateView):
     template_name = "appTp1/home.html"
+    form = ContactUsForm()
     def get_context_data(self, **kwargs):
         context = super(ContactView, self).get_context_data(**kwargs)
-        context['titreh1'] = "Contact us..."
+        context['titreh1'] = "Contact us!"
         return context
     def post(self, request, **kwargs):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {"form": self.form})
 
 class ProductListView(ListView):
     model = Product
@@ -88,3 +90,22 @@ class ConnectView(LoginView):
             return render(request, "appTp1/home.html", {"titreh1": "Hello " + username + ", you're connected"})
         else:
             return render(request, 'appTp1/register.html')
+
+class RegisterView(TemplateView):
+    template_name = "appTp1/register.html"
+    def post(self, request, **kwargs):
+        username = request.POST.get('username', False)
+        mail = request.POST.get('mail', False)
+        password = request.POST.get('password', False)
+        user = User.objects.create_user(username, mail, password)
+        user.save()
+        if user is not None and user.is_active:
+            return render(request, "appTp1/login.html")
+        else:
+            return render(request, 'appTp1/register.html')
+
+class DisconnectView(TemplateView):
+    template_name = "appTp1/logout.html"
+    def get(self, request, **kwargs):
+        logout(request)
+        return render(request, self.template_name)

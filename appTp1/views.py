@@ -29,7 +29,7 @@ class AboutView(TemplateView):
         return render(request, self.template_name)
 
 class ContactView(TemplateView):
-    template_name = "appTp1/home.html"
+    template_name = "appTp1/contact.html"
     form = ContactUsForm()
     def get_context_data(self, **kwargs):
         context = super(ContactView, self).get_context_data(**kwargs)

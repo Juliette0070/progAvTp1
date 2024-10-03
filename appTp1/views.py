@@ -5,8 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import redirect
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 
-from appTp1.forms import ContactUsForm
+from appTp1.forms import ContactUsForm, ProductForm
 from appTp1.models import Product, ProductItem
 
 # Create your views here.
@@ -124,3 +126,25 @@ class DisconnectView(TemplateView):
     def get(self, request, **kwargs):
         logout(request)
         return render(request, self.template_name)
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "appTp1/new_product.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        product = form.save()
+        return redirect('product-detail', product.id)
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "appTp1/update_product.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        product = form.save()
+        return redirect('product-detail', product.id)
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = "appTp1/delete_product.html"
+    def get_success_url(self):
+        return redirect('products')

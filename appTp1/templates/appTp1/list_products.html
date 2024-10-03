@@ -2,6 +2,7 @@
 {% block title %}Produits{% endblock %}
 {% block content %}
 <h1>{{ titremenu }} ({{ prdcts | length }})</h1>
+<p><a href="{% url 'product-add' %}">Créer un nouveau produit</a></p>
 <ul>
     {% if prdcts|length == 0 %}
         <li>Aucun produit</li>

@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1>{{ titremenu }}</h1>
+    <p><a href="{% url 'product-update' product.id %}">Modifier</a> - <a href="{% url 'product-delete' product.id %}">Supprimer</a></p>
     <h2>{{ product.name }}</h2>
     <ul>
         <li>Code: {{ product.code }}</li>

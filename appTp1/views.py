@@ -3,6 +3,8 @@ from django.views.generic import *
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.shortcuts import redirect
 
 from appTp1.forms import ContactUsForm
 from appTp1.models import Product, ProductItem
@@ -28,15 +30,28 @@ class AboutView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
-class ContactView(TemplateView):
-    template_name = "appTp1/contact.html"
-    form = ContactUsForm()
+def ContactView(request):
+    titreh1 = "Contact us!"
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            send_mail(
+                subject=f"Message from {form.cleaned_data['name'] or 'anonyme'} via MonProjet Contact Us form",
+                message=form.cleaned_data['message'],
+                from_email=form.cleaned_data['email'],
+                recipient_list=['admin@monprojet.com'],
+            )
+            return redirect('email-sent')
+    else:
+        form = ContactUsForm()
+    return render(request, "appTp1/contact.html", {"form": form, "titreh1": titreh1})
+
+class EmailSentView(TemplateView):
+    template_name = "appTp1/email_sent.html"
     def get_context_data(self, **kwargs):
-        context = super(ContactView, self).get_context_data(**kwargs)
-        context['titreh1'] = "Contact us!"
+        context = super(EmailSentView, self).get_context_data(**kwargs)
+        context['titreh1'] = "Email sent!"
         return context
-    def post(self, request, **kwargs):
-        return render(request, self.template_name, {"form": self.form})
 
 class ProductListView(ListView):
     model = Product

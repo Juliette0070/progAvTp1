@@ -7,8 +7,9 @@ from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
+from django.urls import reverse_lazy
 
-from appTp1.forms import ContactUsForm, ProductForm
+from appTp1.forms import ContactUsForm, ProductForm, ProductItemForm
 from appTp1.models import Product, ProductItem
 
 # Create your views here.
@@ -146,5 +147,25 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     template_name = "appTp1/delete_product.html"
-    def get_success_url(self):
-        return redirect('products')
+    success_url = reverse_lazy('products')
+
+class ProductItemCreateView(CreateView):
+    model = ProductItem
+    form_class = ProductItemForm
+    template_name = "appTp1/new_item.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        item = form.save()
+        return redirect('item-detail', item.id)
+
+class ProductItemUpdateView(UpdateView):
+    model = ProductItem
+    form_class = ProductItemForm
+    template_name = "appTp1/update_item.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        item = form.save()
+        return redirect('item-detail', item.id)
+
+class ProductItemDeleteView(DeleteView):
+    model = ProductItem
+    template_name = "appTp1/delete_item.html"
+    success_url = reverse_lazy('items')

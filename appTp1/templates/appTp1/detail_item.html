@@ -2,6 +2,7 @@
 {% block title %}Detail Item{% endblock %}
 {% block content %}
     <h1>{{ titremenu }}</h1>
+    <p><a href="{% url 'item-update' item.id %}">Modifier</a> - <a href="{% url 'item-delete' item.id %}">Supprimer</a></p>
     <h2><a href="{% url 'product-detail' item.product.id %}">{{ item.product.name }}</a> {{ item.code }}</h2>
     <p>Attributs:</p>
     <ul>

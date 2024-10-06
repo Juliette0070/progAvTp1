@@ -1,6 +1,6 @@
 from django import forms
 
-from appTp1.models import Product
+from appTp1.models import Product, ProductItem
 
 class ContactUsForm(forms.Form):
     name = forms.CharField(required=False)
@@ -11,3 +11,8 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         exclude = ('price_ttc', 'status')
+
+class ProductItemForm(forms.ModelForm):
+    class Meta:
+        model = ProductItem
+        fields = '__all__'

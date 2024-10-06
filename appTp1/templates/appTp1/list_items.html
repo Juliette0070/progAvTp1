@@ -1,6 +1,8 @@
 {% extends 'appTp1/base.html' %}
+{% block title %}Déclinaisons{% endblock %}
 {% block content %}
 <h1>{{ titremenu }}</h1>
+<p><a href="{% url 'item-add' %}">Créer une nouvelle déclinaison</a></p>
 <ul>
     {% if declinaisons|length == 0 %}
         <li>Aucune déclinaison</li>

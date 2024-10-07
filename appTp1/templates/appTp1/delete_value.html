@@ -1,0 +1,12 @@
+{% extends 'appTp1/base.html' %}
+
+{% block title %}Delete Valeur{% endblock %}
+
+{% block content %}
+    <h2>{{ productattributevalue.product_attribute.name }} {{ productattributevalue.value }}</h2>
+    <p>Voulez-vous vraiment supprimer cette valeur ?</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success mt-2">Supprimer</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'appTp1/base.html' %}
+{% block title %}Detail Attribut{% endblock %}
+{% block content %}
+    <h1>{{ titremenu }}</h1>
+    <p><a href="{% url 'attribute-update' attribute.id %}">Modifier</a> - <a href="{% url 'attribute-delete' attribute.id %}">Supprimer</a></p>
+    <h2>{{ attribute.name }}</h2>
+{% endblock %}

@@ -9,8 +9,8 @@ from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 
-from appTp1.forms import ContactUsForm, ProductForm, ProductItemForm
-from appTp1.models import Product, ProductItem
+from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm
+from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem
 
 # Create your views here.
 
@@ -169,3 +169,85 @@ class ProductItemDeleteView(DeleteView):
     model = ProductItem
     template_name = "appTp1/delete_item.html"
     success_url = reverse_lazy('items')
+
+class ProductAttributeListView(ListView):
+    model = ProductAttribute
+    template_name = "appTp1/list_attributes.html"
+    context_object_name = "attributes"
+    def get_queryset(self):
+        return ProductAttribute.objects.order_by('name')
+    def get_context_data(self, **kwargs):
+        context = super(ProductAttributeListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des attributs"
+        return context
+
+class ProductAttributeDetailView(DetailView):
+    model = ProductAttribute
+    template_name = "appTp1/detail_attribute.html"
+    context_object_name = "attribute"
+    def get_context_data(self, **kwargs):
+        context = super(ProductAttributeDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail attribut"
+        return context
+
+class ProductAttributeCreateView(CreateView):
+    model = ProductAttribute
+    form_class = ProductAttributeForm
+    template_name = "appTp1/new_attribute.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        attribute = form.save()
+        return redirect('attribute-detail', attribute.id)
+
+class ProductAttributeUpdateView(UpdateView):
+    model = ProductAttribute
+    form_class = ProductAttributeForm
+    template_name = "appTp1/update_attribute.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        attribute = form.save()
+        return redirect('attribute-detail', attribute.id)
+
+class ProductAttributeDeleteView(DeleteView):
+    model = ProductAttribute
+    template_name = "appTp1/delete_attribute.html"
+    success_url = reverse_lazy('attributes')
+
+class ProductAttributeValueListView(ListView):
+    model = ProductAttributeValue
+    template_name = "appTp1/list_values.html"
+    context_object_name = "values"
+    def get_queryset(self):
+        return ProductAttributeValue.objects.order_by('value')
+    def get_context_data(self, **kwargs):
+        context = super(ProductAttributeValueListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des valeurs"
+        return context
+
+class ProductAttributeValueDetailView(DetailView):
+    model = ProductAttributeValue
+    template_name = "appTp1/detail_value.html"
+    context_object_name = "value"
+    def get_context_data(self, **kwargs):
+        context = super(ProductAttributeValueDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail valeur"
+        return context
+
+class ProductAttributeValueCreateView(CreateView):
+    model = ProductAttributeValue
+    form_class = ProductAttributeValueForm
+    template_name = "appTp1/new_value.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        value = form.save()
+        return redirect('value-detail', value.id)
+
+class ProductAttributeValueUpdateView(UpdateView):
+    model = ProductAttributeValue
+    form_class = ProductAttributeValueForm
+    template_name = "appTp1/update_value.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        value = form.save()
+        return redirect('value-detail', value.id)
+
+class ProductAttributeValueDeleteView(DeleteView):
+    model = ProductAttributeValue
+    template_name = "appTp1/delete_value.html"
+    success_url = reverse_lazy('values')

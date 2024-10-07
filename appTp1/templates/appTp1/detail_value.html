@@ -1,0 +1,10 @@
+{% extends 'appTp1/base.html' %}
+{% block title %}Detail Valeur{% endblock %}
+{% block content %}
+    <h1>{{ titremenu }}</h1>
+    <p><a href="{% url 'value-update' value.id %}">Modifier</a> - <a href="{% url 'value-delete' value.id %}">Supprimer</a></p>
+    <h2><a href="{% url 'attribute-detail' value.product_attribute.id %}">{{ value.product_attribute.name }}</a> {{ value.value }}</h2>
+    <ul>
+        <li>Position: {{ value.position }}</li>
+    </ul>
+{% endblock %}

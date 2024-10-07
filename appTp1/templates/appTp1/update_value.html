@@ -1,0 +1,12 @@
+{% extends 'appTp1/base.html' %}
+
+{% block title %}Update Valeur{% endblock %}
+
+{% block content %}
+    <h2>Modification d'une valeur</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success mt-2">Modifier</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'appTp1/base.html' %}
+{% block title %}Attributs{% endblock %}
+{% block content %}
+<h1>{{ titremenu }}</h1>
+<p><a href="{% url 'attribute-add' %}">Créer un nouvel attribut</a></p>
+<ul>
+    {% if attributes|length == 0 %}
+        <li>Aucun attribut</li>
+    {% else %}
+        {% for a in attributes %}
+            <li><a href="{% url 'attribute-detail' a.id %}">{{ a.name }}</a></li>
+        {% endfor %}
+    {% endif %}
+</ul>
+{% endblock %}

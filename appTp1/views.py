@@ -9,8 +9,8 @@ from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 
-from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm
-from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem
+from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm, FournisseurForm
+from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem, Fournisseur
 
 
 # View principales
@@ -284,3 +284,50 @@ class ProductAttributeValueDeleteView(DeleteView):
     model = ProductAttributeValue
     template_name = "appTp1/delete_value.html"
     success_url = reverse_lazy('values')
+
+
+
+
+
+# View Fournisseur
+
+class FournisseurListView(ListView):
+    model = Fournisseur
+    template_name = "appTp1/list_fournisseurs.html"
+    context_object_name = "fournisseurs"
+    def get_queryset(self):
+        return Fournisseur.objects.order_by('name')
+    def get_context_data(self, **kwargs):
+        context = super(FournisseurListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des fournisseurs"
+        return context
+
+class FournisseurDetailView(DetailView):
+    model = Fournisseur
+    template_name = "appTp1/detail_fournisseur.html"
+    context_object_name = "fournisseur"
+    def get_context_data(self, **kwargs):
+        context = super(FournisseurDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail fournisseur"
+        return context
+    
+class FournisseurCreateView(CreateView):
+    model = Fournisseur
+    form_class = FournisseurForm
+    template_name = "appTp1/new_fournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        fournisseur = form.save()
+        return redirect('fournisseur-detail', fournisseur.id)
+    
+class FournisseurUpdateView(UpdateView):
+    model = Fournisseur
+    form_class = FournisseurForm
+    template_name = "appTp1/update_fournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        fournisseur = form.save()
+        return redirect('fournisseur-detail', fournisseur.id)
+    
+class FournisseurDeleteView(DeleteView):
+    model = Fournisseur
+    template_name = "appTp1/delete_fournisseur.html"
+    success_url = reverse_lazy('fournisseurs')

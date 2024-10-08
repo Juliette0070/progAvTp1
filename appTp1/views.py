@@ -12,9 +12,9 @@ from django.urls import reverse_lazy
 from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm, FournisseurForm
 from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem, Fournisseur
 
-
 # View principales
 
+# Home
 class HomeView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -25,6 +25,8 @@ class HomeView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
+
+# About
 class AboutView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -34,6 +36,8 @@ class AboutView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
+
+# Contact
 def ContactView(request):
     titreh1 = "Contact us!"
     if request.method == 'POST':
@@ -63,6 +67,7 @@ class EmailSentView(TemplateView):
 
 # View Authentification
 
+# Login
 class ConnectView(LoginView):
     template_name = "appTp1/login.html"
     def post(self, request, **kwargs):
@@ -149,6 +154,8 @@ class ProductDeleteView(DeleteView):
 
 
 
+
+# View ProductItems
 
 class ProductItemListView(ListView):
     model = ProductItem

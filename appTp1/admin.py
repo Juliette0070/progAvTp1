@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductAttribute, ProductAttributeValue, ProductItem
+from .models import Product, ProductAttribute, ProductAttributeValue, ProductItem, Fournisseur, Commande, ProductFournisseur
 
 # Register your models here.
 
@@ -54,7 +54,16 @@ class ProductAdmin(admin.ModelAdmin):
     tax.admin_order_field = "price_ht"
 
 
+class CommandeAdmin(admin.ModelAdmin):
+    model = Fournisseur
+    ordering = ["-date_commande",]
+    list_display = ("product_fournisseur", "quantity", "date_commande")
+
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductItem)
 admin.site.register(ProductAttribute)
 admin.site.register(ProductAttributeValue)
+admin.site.register(Fournisseur)
+admin.site.register(Commande, CommandeAdmin)
+admin.site.register(ProductFournisseur)

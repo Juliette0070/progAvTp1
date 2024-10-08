@@ -65,7 +65,7 @@ class Commande(models.Model):
     etat                = models.SmallIntegerField(choices=ORDER_STATUS, default=0)
 
     def __str__(self):
-        return "{0}".format(self.date_commande)
+        return "{0} {1}".format(self.quantity, self.product_fournisseur)
     
 
 class ProductFournisseur(models.Model):
@@ -81,7 +81,7 @@ class ProductFournisseur(models.Model):
     prix               = models.DecimalField(max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name="Prix")
 
     def __str__(self):
-        return "{0}".format(self.product)
+        return "{0}: {1} ({2}€)".format(self.fournisseur, self.product.name, self.prix)
     
 
 

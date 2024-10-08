@@ -12,8 +12,8 @@ from django.urls import reverse_lazy
 from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm
 from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem
 
-# Create your views here.
 
+# Home
 class HomeView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -24,6 +24,8 @@ class HomeView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
+
+# About
 class AboutView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -33,6 +35,8 @@ class AboutView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
+
+# Contact
 def ContactView(request):
     titreh1 = "Contact us!"
     if request.method == 'POST':
@@ -56,47 +60,8 @@ class EmailSentView(TemplateView):
         context['titreh1'] = "Email sent!"
         return context
 
-class ProductListView(ListView):
-    model = Product
-    template_name = "appTp1/list_products.html"
-    context_object_name = "prdcts"
-    def get_queryset(self):
-        return Product.objects.order_by('price_ttc')
-    def get_context_data(self, **kwargs):
-        context = super(ProductListView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Liste des produits"
-        return context
 
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = "appTp1/detail_product.html"
-    context_object_name = "product"
-    def get_context_data(self, **kwargs):
-        context = super(ProductDetailView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Détail produit"
-        context['declinaisons'] = ProductItem.objects.filter(product=self.object)
-        return context
-
-class ProductItemListView(ListView):
-    model = ProductItem
-    template_name = "appTp1/list_items.html"
-    context_object_name = "declinaisons"
-    def get_queryset(self):
-        return ProductItem.objects.order_by('code')
-    def get_context_data(self, **kwargs):
-        context = super(ProductItemListView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Liste des déclinaisons"
-        return context
-
-class ProductItemDetailView(DetailView):
-    model = ProductItem
-    template_name = "appTp1/detail_item.html"
-    context_object_name = "item"
-    def get_context_data(self, **kwargs):
-        context = super(ProductItemDetailView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Détail déclinaison"
-        return context
-
+# Login
 class ConnectView(LoginView):
     template_name = "appTp1/login.html"
     def post(self, request, **kwargs):
@@ -128,6 +93,29 @@ class DisconnectView(TemplateView):
         logout(request)
         return render(request, self.template_name)
 
+
+# Products
+class ProductListView(ListView):
+    model = Product
+    template_name = "appTp1/list_products.html"
+    context_object_name = "prdcts"
+    def get_queryset(self):
+        return Product.objects.order_by('price_ttc')
+    def get_context_data(self, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des produits"
+        return context
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "appTp1/detail_product.html"
+    context_object_name = "product"
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail produit"
+        context['declinaisons'] = ProductItem.objects.filter(product=self.object)
+        return context
+
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
@@ -148,6 +136,28 @@ class ProductDeleteView(DeleteView):
     model = Product
     template_name = "appTp1/delete_product.html"
     success_url = reverse_lazy('products')
+
+
+# ProductItems
+class ProductItemListView(ListView):
+    model = ProductItem
+    template_name = "appTp1/list_items.html"
+    context_object_name = "declinaisons"
+    def get_queryset(self):
+        return ProductItem.objects.order_by('code')
+    def get_context_data(self, **kwargs):
+        context = super(ProductItemListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des déclinaisons"
+        return context
+
+class ProductItemDetailView(DetailView):
+    model = ProductItem
+    template_name = "appTp1/detail_item.html"
+    context_object_name = "item"
+    def get_context_data(self, **kwargs):
+        context = super(ProductItemDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail déclinaison"
+        return context
 
 class ProductItemCreateView(CreateView):
     model = ProductItem
@@ -170,6 +180,8 @@ class ProductItemDeleteView(DeleteView):
     template_name = "appTp1/delete_item.html"
     success_url = reverse_lazy('items')
 
+
+# ProductAttributes
 class ProductAttributeListView(ListView):
     model = ProductAttribute
     template_name = "appTp1/list_attributes.html"
@@ -211,6 +223,8 @@ class ProductAttributeDeleteView(DeleteView):
     template_name = "appTp1/delete_attribute.html"
     success_url = reverse_lazy('attributes')
 
+
+# ProductAttributeValues
 class ProductAttributeValueListView(ListView):
     model = ProductAttributeValue
     template_name = "appTp1/list_values.html"
@@ -251,3 +265,10 @@ class ProductAttributeValueDeleteView(DeleteView):
     model = ProductAttributeValue
     template_name = "appTp1/delete_value.html"
     success_url = reverse_lazy('values')
+
+
+# Fournisseur
+
+
+# Commande
+

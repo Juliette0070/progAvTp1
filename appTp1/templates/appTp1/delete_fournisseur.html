@@ -1,0 +1,12 @@
+{% extends 'appTp1/base.html' %}
+
+{% block title %}Delete Fournisseur{% endblock %}
+
+{% block content %}
+    <h2>{{ fournisseur.name }}</h2>
+    <p>Voulez-vous vraiment supprimer ce produit ?</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success mt-2">Supprimer</button>
+    </form>
+{% endblock %}

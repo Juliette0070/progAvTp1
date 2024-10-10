@@ -21,6 +21,7 @@
                 <li><a href="{% url 'items' %}">Items</a></li>
                 <li><a href="{% url 'attributes' %}">Attributes</a></li>
                 <li><a href="{% url 'values' %}">Values</a></li>
+                <li><a href="{% url 'fournisseurs' %}">Fournisseurs</a></li>
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}

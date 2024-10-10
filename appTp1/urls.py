@@ -45,4 +45,10 @@ urlpatterns = [
     path('fournisseur/add', views.FournisseurCreateView.as_view(), name='fournisseur-add'),
     path('fournisseur/<pk>/update/', views.FournisseurUpdateView.as_view(), name='fournisseur-update'),
     path('fournisseur/<pk>/delete/', views.FournisseurDeleteView.as_view(), name='fournisseur-delete'),
+
+    path('productfournisseur/list', views.ProductFournisseurListView.as_view(), name='productsfournisseurs'),
+    path('productfournisseur/<pk>/', views.ProductFournisseurDetailView.as_view(), name='productfournisseur-detail'),
+    path('productfournisseur/add', views.ProductFournisseurCreateView.as_view(), name='productfournisseur-add'),
+    path('productfournisseur/<pk>/update/', views.ProductFournisseurUpdateView.as_view(), name='productfournisseur-update'),
+    path('productfournisseur/<pk>/delete/', views.ProductFournisseurDeleteView.as_view(), name='productfournisseur-delete'),
 ]

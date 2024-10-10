@@ -1,0 +1,15 @@
+{% extends 'appTp1/base.html' %}
+{% block title %}Produits Fournisseurs{% endblock %}
+{% block content %}
+<h1>{{ titremenu }} ({{ productsfournisseurs | length }})</h1>
+<p><a href="{% url 'productfournisseur-add' %}">Créer un nouveau Product de Fournisseur</a></p>
+<ul>
+    {% if productsfournisseurs|length == 0 %}
+        <li>Aucun product de fournisseur</li>
+    {% else %}
+        {% for p in productsfournisseurs %}
+            <li><a href="{% url 'productfournisseur-detail' p.id %}">{{p.product.name}} ({{p.fournisseur.name}})</a> ({{p.prix}}€)</li>
+        {% endfor %}
+    {% endif %}
+</ul>
+{% endblock %}

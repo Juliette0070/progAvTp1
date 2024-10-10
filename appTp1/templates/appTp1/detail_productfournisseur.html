@@ -1,0 +1,13 @@
+{% extends 'appTp1/base.html' %}
+
+{% block title %}Detail Produit de Fournisseur{% endblock %}
+
+{% block content %}
+    <h1>{{ titremenu }}</h1>
+    <p><a href="{% url 'productfournisseur-update' productfournisseur.id %}">Modifier</a> - <a href="{% url 'productfournisseur-delete' productfournisseur.id %}">Supprimer</a></p>
+    <ul>
+        <li>Fournisseur: <a href="{% url 'fournisseur-detail' productfournisseur.fournisseur.id %}">{{ productfournisseur.fournisseur.name }}</a></li>
+        <li>Produit: <a href="{% url 'product-detail' productfournisseur.product.id %}">{{ productfournisseur.product.name }}</a></li>
+        <li>Prix: {{ productfournisseur.prix }}€</li>
+    </ul>
+{% endblock %}

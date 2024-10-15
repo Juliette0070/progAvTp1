@@ -334,7 +334,7 @@ class FournisseurDetailView(DetailView):
         context = super(FournisseurDetailView, self).get_context_data(**kwargs)
         context['titremenu'] = "Détail fournisseur"
         return context
-    
+
 @method_decorator(login_required, name='dispatch')
 class FournisseurCreateView(CreateView):
     model = Fournisseur
@@ -343,7 +343,7 @@ class FournisseurCreateView(CreateView):
     def form_valid(self, form:BaseModelForm)->HttpResponse:
         fournisseur = form.save()
         return redirect('fournisseur-detail', fournisseur.id)
-    
+
 @method_decorator(login_required, name='dispatch')
 class FournisseurUpdateView(UpdateView):
     model = Fournisseur
@@ -352,7 +352,7 @@ class FournisseurUpdateView(UpdateView):
     def form_valid(self, form:BaseModelForm)->HttpResponse:
         fournisseur = form.save()
         return redirect('fournisseur-detail', fournisseur.id)
-    
+
 @method_decorator(login_required, name='dispatch')
 class FournisseurDeleteView(DeleteView):
     model = Fournisseur
@@ -384,7 +384,8 @@ class ProductFournisseurDetailView(DetailView):
         context = super(ProductFournisseurDetailView, self).get_context_data(**kwargs)
         context['titremenu'] = "Détail fournisseur"
         return context
-    
+
+@method_decorator(login_required, name='dispatch')
 class ProductFournisseurCreateView(CreateView):
     model = ProductFournisseur
     form_class = ProductFournisseurForm
@@ -392,7 +393,8 @@ class ProductFournisseurCreateView(CreateView):
     def form_valid(self, form:BaseModelForm)->HttpResponse:
         productfournisseur = form.save()
         return redirect('productfournisseur-detail', productfournisseur.id)
-    
+
+@method_decorator(login_required, name='dispatch')
 class ProductFournisseurUpdateView(UpdateView):
     model = ProductFournisseur
     form_class = ProductFournisseurForm
@@ -400,7 +402,8 @@ class ProductFournisseurUpdateView(UpdateView):
     def form_valid(self, form:BaseModelForm)->HttpResponse:
         productfournisseur = form.save()
         return redirect('productfournisseur-detail', productfournisseur.id)
-    
+
+@method_decorator(login_required, name='dispatch')
 class ProductFournisseurDeleteView(DeleteView):
     model = ProductFournisseur
     template_name = "appTp1/delete_productfournisseur.html"

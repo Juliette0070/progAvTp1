@@ -9,8 +9,9 @@ from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 
-from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm, FournisseurForm, CommandeForm
-from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem, Fournisseur, Commande
+from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductFournisseurForm, ProductItemForm, FournisseurForm, CommandeForm
+from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductFournisseur, ProductItem, Fournisseur, Commande
+
 
 # View principales
 
@@ -385,3 +386,50 @@ class CommandeDeleteView(DeleteView):
     model = Commande
     template_name = "appTp1/delete_commande.html"
     success_url = reverse_lazy('commandes')
+
+    
+    
+    
+    
+# View ProductFournisseur
+
+class ProductFournisseurListView(ListView):
+    model = ProductFournisseur
+    template_name = "appTp1/list_productsfournisseurs.html"
+    context_object_name = "productsfournisseurs"
+    def get_queryset(self):
+        return ProductFournisseur.objects.order_by('product')
+    def get_context_data(self, **kwargs):
+        context = super(ProductFournisseurListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des produits de fournisseurs"
+        return context
+
+class ProductFournisseurDetailView(DetailView):
+    model = ProductFournisseur
+    template_name = "appTp1/detail_productfournisseur.html"
+    context_object_name = "productfournisseur"
+    def get_context_data(self, **kwargs):
+        context = super(ProductFournisseurDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail fournisseur"
+        return context
+    
+class ProductFournisseurCreateView(CreateView):
+    model = ProductFournisseur
+    form_class = ProductFournisseurForm
+    template_name = "appTp1/new_productfournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        productfournisseur = form.save()
+        return redirect('productfournisseur-detail', productfournisseur.id)
+    
+class ProductFournisseurUpdateView(UpdateView):
+    model = ProductFournisseur
+    form_class = ProductFournisseurForm
+    template_name = "appTp1/update_productfournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        productfournisseur = form.save()
+        return redirect('productfournisseur-detail', productfournisseur.id)
+    
+class ProductFournisseurDeleteView(DeleteView):
+    model = ProductFournisseur
+    template_name = "appTp1/delete_productfournisseur.html"
+    success_url = reverse_lazy('productsfournisseurs')

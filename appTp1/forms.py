@@ -41,4 +41,3 @@ class ProductFournisseurForm(forms.ModelForm):
     class Meta:
         model = ProductFournisseur
         fields = '__all__'
-        

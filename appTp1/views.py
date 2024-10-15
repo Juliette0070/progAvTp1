@@ -17,6 +17,9 @@ from appTp1.models import Product, ProductAttribute, ProductAttributeValue, Prod
 
 
 
+from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductFournisseurForm, ProductItemForm, FournisseurForm, CommandeForm
+from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductFournisseur, ProductItem, Fournisseur, Commande
+
 
 # View principales
 
@@ -362,6 +365,53 @@ class FournisseurDeleteView(DeleteView):
 
 
 
+
+# View Commande
+
+class CommandeListView(ListView):
+    model = Commande
+    template_name = "appTp1/list_commandes.html"
+    context_object_name = "commandes"
+    def get_queryset(self):
+        return Commande.objects.order_by('date_commande')
+    def get_context_data(self, **kwargs):
+        context = super(CommandeListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des commandes"
+        return context
+
+class CommandeDetailView(DetailView):
+    model = Commande
+    template_name = "appTp1/detail_commande.html"
+    context_object_name = "commande"
+    def get_context_data(self, **kwargs):
+        context = super(CommandeDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail commande"
+        return context
+    
+class CommandeCreateView(CreateView):
+    model = Commande
+    form_class = CommandeForm
+    template_name = "appTp1/new_commande.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        commande = form.save()
+        return redirect('commande-detail', commande.id)
+    
+class CommandeUpdateView(UpdateView):
+    model = Commande
+    form_class = CommandeForm
+    template_name = "appTp1/update_commande.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        commande = form.save()
+        return redirect('commande-detail', commande.id)
+    
+class CommandeDeleteView(DeleteView):
+    model = Commande
+    template_name = "appTp1/delete_commande.html"
+    success_url = reverse_lazy('commandes')
+
+    
+    
+    
 
 # View ProductFournisseur
 

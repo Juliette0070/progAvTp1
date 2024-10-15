@@ -1,0 +1,15 @@
+{% extends 'appTp1/base.html' %}
+{% block title %}Valeurs{% endblock %}
+{% block content %}
+<h1>{{ titremenu }}</h1>
+<p><a href="{% url 'commande-add' %}">Créer une commande</a></p>
+<ul>
+    {% if commandes|length == 0 %}
+        <li>Aucune commande</li>
+    {% else %}
+        {% for c in commandes %}
+            <li><a href="{% url 'commande-detail' c.id %}">{{ v.value }}</a> ({{ c }})</li>
+        {% endfor %}
+    {% endif %}
+</ul>
+{% endblock %}

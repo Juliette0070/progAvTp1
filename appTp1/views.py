@@ -8,9 +8,15 @@ from django.shortcuts import redirect
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm, FournisseurForm
 from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem, Fournisseur
+
+
+
+
 
 # View principales
 
@@ -105,7 +111,6 @@ class DisconnectView(TemplateView):
 
 #View CRUD Models
 
-
 # View Produit
 
 class ProductListView(ListView):
@@ -129,6 +134,7 @@ class ProductDetailView(DetailView):
         context['declinaisons'] = ProductItem.objects.filter(product=self.object)
         return context
 
+@method_decorator(login_required, name='dispatch')
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
@@ -137,6 +143,7 @@ class ProductCreateView(CreateView):
         product = form.save()
         return redirect('product-detail', product.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
@@ -145,6 +152,7 @@ class ProductUpdateView(UpdateView):
         product = form.save()
         return redirect('product-detail', product.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductDeleteView(DeleteView):
     model = Product
     template_name = "appTp1/delete_product.html"
@@ -177,6 +185,7 @@ class ProductItemDetailView(DetailView):
         context['titremenu'] = "Détail déclinaison"
         return context
 
+@method_decorator(login_required, name='dispatch')
 class ProductItemCreateView(CreateView):
     model = ProductItem
     form_class = ProductItemForm
@@ -185,6 +194,7 @@ class ProductItemCreateView(CreateView):
         item = form.save()
         return redirect('item-detail', item.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductItemUpdateView(UpdateView):
     model = ProductItem
     form_class = ProductItemForm
@@ -193,6 +203,7 @@ class ProductItemUpdateView(UpdateView):
         item = form.save()
         return redirect('item-detail', item.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductItemDeleteView(DeleteView):
     model = ProductItem
     template_name = "appTp1/delete_item.html"
@@ -224,6 +235,7 @@ class ProductAttributeDetailView(DetailView):
         context['titremenu'] = "Détail attribut"
         return context
 
+@method_decorator(login_required, name='dispatch')
 class ProductAttributeCreateView(CreateView):
     model = ProductAttribute
     form_class = ProductAttributeForm
@@ -232,6 +244,7 @@ class ProductAttributeCreateView(CreateView):
         attribute = form.save()
         return redirect('attribute-detail', attribute.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductAttributeUpdateView(UpdateView):
     model = ProductAttribute
     form_class = ProductAttributeForm
@@ -240,6 +253,7 @@ class ProductAttributeUpdateView(UpdateView):
         attribute = form.save()
         return redirect('attribute-detail', attribute.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductAttributeDeleteView(DeleteView):
     model = ProductAttribute
     template_name = "appTp1/delete_attribute.html"
@@ -271,6 +285,7 @@ class ProductAttributeValueDetailView(DetailView):
         context['titremenu'] = "Détail valeur"
         return context
 
+@method_decorator(login_required, name='dispatch')
 class ProductAttributeValueCreateView(CreateView):
     model = ProductAttributeValue
     form_class = ProductAttributeValueForm
@@ -279,6 +294,7 @@ class ProductAttributeValueCreateView(CreateView):
         value = form.save()
         return redirect('value-detail', value.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductAttributeValueUpdateView(UpdateView):
     model = ProductAttributeValue
     form_class = ProductAttributeValueForm
@@ -287,6 +303,7 @@ class ProductAttributeValueUpdateView(UpdateView):
         value = form.save()
         return redirect('value-detail', value.id)
 
+@method_decorator(login_required, name='dispatch')
 class ProductAttributeValueDeleteView(DeleteView):
     model = ProductAttributeValue
     template_name = "appTp1/delete_value.html"
@@ -318,6 +335,7 @@ class FournisseurDetailView(DetailView):
         context['titremenu'] = "Détail fournisseur"
         return context
     
+@method_decorator(login_required, name='dispatch')
 class FournisseurCreateView(CreateView):
     model = Fournisseur
     form_class = FournisseurForm
@@ -326,6 +344,7 @@ class FournisseurCreateView(CreateView):
         fournisseur = form.save()
         return redirect('fournisseur-detail', fournisseur.id)
     
+@method_decorator(login_required, name='dispatch')
 class FournisseurUpdateView(UpdateView):
     model = Fournisseur
     form_class = FournisseurForm
@@ -334,6 +353,7 @@ class FournisseurUpdateView(UpdateView):
         fournisseur = form.save()
         return redirect('fournisseur-detail', fournisseur.id)
     
+@method_decorator(login_required, name='dispatch')
 class FournisseurDeleteView(DeleteView):
     model = Fournisseur
     template_name = "appTp1/delete_fournisseur.html"

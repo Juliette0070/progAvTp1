@@ -8,11 +8,7 @@ PRODUCT_STATUS = (
     (2, 'Out of stock')              
 )
 
-ORDER_STATUS = (
-    (0, 'En Préparation'),
-    (1, 'Passée'),
-    (2, 'Reçue'),
-)
+
 
 
 """
@@ -55,14 +51,21 @@ class Commande(models.Model):
     """
     Commande de produit
     """
-    
+    STATUS_CHOICES = (
+        (0, 'En Préparation'),
+        (1, 'Passée'),
+        (2, 'Reçue'),
+    )
     class Meta:
         verbose_name = "Commande"
         
     date_commande       = models.DateTimeField("Date commande", default=timezone.now)
     product_fournisseur = models.ForeignKey('ProductFournisseur', on_delete=models.CASCADE)
     quantity            = models.IntegerField(default=0)
-    etat                = models.SmallIntegerField(choices=ORDER_STATUS, default=0)
+    etat                = models.SmallIntegerField(choices=STATUS_CHOICES, default=0)
+
+    def get_status_display(self):
+        return dict(self.STATUS_CHOICES).get(self.etat, 'Unknown')
 
     def __str__(self):
         return "{0} {1}".format(self.quantity, self.product_fournisseur)

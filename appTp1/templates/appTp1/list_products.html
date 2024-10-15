@@ -21,7 +21,7 @@
             <td onclick="window.location.href = '{% url 'product-detail' p.id %}';">{{p.price_ht}}€</td>
             <td onclick="window.location.href = '{% url 'product-detail' p.id %}';">{{p.stock}}</td>
             {% if user.is_staff %}
-                <td><a href="">Commander</a></td>
+                <td><a href="{% url 'commande-add'%}">Commander</a></td>
             {% endif %}
         </tr>
     {% endfor %}

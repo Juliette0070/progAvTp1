@@ -3,13 +3,28 @@
 {% block content %}
 <h1>{{ titremenu }}</h1>
 <p><a href="{% url 'commande-add' %}">Créer une commande</a></p>
-<ul>
-    {% if commandes|length == 0 %}
-        <li>Aucune commande</li>
-    {% else %}
-        {% for c in commandes %}
-            <li><a href="{% url 'commande-detail' c.id %}">{{ v.value }}</a> ({{ c }})</li>
-        {% endfor %}
-    {% endif %}
-</ul>
+{% if commandes|length == 0 %}
+    <p>Aucunes commandes</p>
+{% else %}
+<table>
+    <tr>
+        <th>Produit</th>
+        <th>Fournisseur</th>
+        <th>Date</th>
+        <th>Quantité</th>
+        <th>Prix Total</th>
+        <th>Etat</th>
+    </tr>
+    {% for c in commandes %}
+        <tr>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';"">{{c.product_fournisseur.product.name}}</td>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{c.product_fournisseur.fournisseur.name}}</td>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{c.date_commande}}</td>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{c.quantity}}</td>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{% widthratio c.product_fournisseur.prix 1 c.quantity %}€</td>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{ c.get_status_display }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
 {% endblock %}

@@ -2,8 +2,7 @@
 {% block title %}Detail Valeur{% endblock %}
 {% load static %}
 {% block content %}
-    <a href="{% url 'values' %}"><img src="{% static 'img/back.png' %}" alt="Retour" style="width: 3rem; height: 3rem;"/></a>
-    <h1>{{ titremenu }}</h1>
+    <h1><a href="{% url 'values' %}"><img src="{% static 'img/back.png' %}" alt="Retour" style="width: 3rem; height: 3rem;"/></a> {{ titremenu }}</h1>
     <p><a href="{% url 'value-update' value.id %}">Modifier</a> - <a href="{% url 'value-delete' value.id %}">Supprimer</a></p>
     <h2><a href="{% url 'attribute-detail' value.product_attribute.id %}">{{ value.product_attribute.name }}</a> {{ value.value }}</h2>
     <ul>

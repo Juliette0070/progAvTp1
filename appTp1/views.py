@@ -373,7 +373,7 @@ class CommandeListView(ListView):
     template_name = "appTp1/list_commandes.html"
     context_object_name = "commandes"
     def get_queryset(self):
-        return Commande.objects.order_by('date_commande')
+        return Commande.objects.order_by('date_commande').reverse()
     def get_context_data(self, **kwargs):
         context = super(CommandeListView, self).get_context_data(**kwargs)
         context['titremenu'] = "Liste des commandes"

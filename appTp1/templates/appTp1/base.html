@@ -25,6 +25,7 @@
                 <a href="{% url 'contact' %}"><li>Contact</li></a>
                 <a href="{% url 'products' %}"><li>Produits</li></a>
                 <a href="{% url 'fournisseurs' %}"><li>Fournisseurs</li></a>
+                <a href="{% url 'commandes' %}"><li>Commandes</li></a>
                 {% if user.is_authenticated %}
                 <a href="{% url 'logout' %}"><li>Déconnexion</li></a>
                 {% else %}

@@ -1,0 +1,9 @@
+{% extends 'appTp1/base.html' %}
+{% block title %}Detail Commande{% endblock %}
+{% load static %}
+{% block content %}
+    <a href="{% url 'commandes' %}"><img src="{% static 'img/back.png' %}" alt="Retour" style="width: 3rem; height: 3rem;"/></a>
+    <h1>{{ titremenu }}</h1>
+    <p><a href="{% url 'commande-update' commande.id %}">Modifier</a> - <a href="{% url 'commande-delete' commande.id %}">Supprimer</a></p>
+    <h2>{{ attribute.name }}</h2>
+{% endblock %}

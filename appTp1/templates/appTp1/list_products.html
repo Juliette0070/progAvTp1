@@ -3,13 +3,28 @@
 {% block content %}
 <h1>{{ titremenu }} ({{ prdcts | length }})</h1>
 <p><a href="{% url 'product-add' %}">Créer un nouveau produit</a></p>
-<ul>
-    {% if prdcts|length == 0 %}
-        <li>Aucun produit</li>
-    {% else %}
-        {% for p in prdcts %}
-            <li><a href="{% url 'product-detail' p.id %}">{{p.name}}</a> ({{p.price_ht}}€)</li>
-        {% endfor %}
-    {% endif %}
-</ul>
+{% if prdcts|length == 0 %}
+    <p>Aucun produit</p>
+{% else %}
+<table>
+    <tr>
+        <th>Produit</th>
+        <th>Prix HT</th>
+        <th>Stock</th>
+        {% if user.is_staff %}
+            <th>Commander</th>
+        {% endif %}
+    </tr>
+    {% for p in prdcts %}
+        <tr>
+            <td onclick="window.location.href = '{% url 'product-detail' p.id %}';"">{{p.name}}</td>
+            <td onclick="window.location.href = '{% url 'product-detail' p.id %}';">{{p.price_ht}}€</td>
+            <td onclick="window.location.href = '{% url 'product-detail' p.id %}';">{{p.stock}}</td>
+            {% if user.is_staff %}
+                <td><a href="">Commander</a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
 {% endblock %}

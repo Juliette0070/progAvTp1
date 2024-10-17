@@ -374,7 +374,7 @@ class CommandeListView(ListView):
     template_name = "appTp1/list_commandes.html"
     context_object_name = "commandes"
     def get_queryset(self):
-        return Commande.objects.order_by('date_commande')
+        return Commande.objects.order_by('date_commande').reverse()
     def get_context_data(self, **kwargs):
         context = super(CommandeListView, self).get_context_data(**kwargs)
         context['titremenu'] = "Liste des commandes"
@@ -414,9 +414,22 @@ class CommandeDeleteView(DeleteView):
     template_name = "appTp1/delete_commande.html"
     success_url = reverse_lazy('commandes')
 
+class CommandeChangeEtatView(View):
+    model = Commande
+    def get(self, request, pk):
+        commande = Commande.objects.get(pk=pk)
+        if commande.etat < 2:
+            print('hey listen')
+            commande.etat += 1
+            commande.save()
+            if commande.etat == 2:
+                commande.product_fournisseur.product.stock += commande.quantity
+                commande.product_fournisseur.product.save()
+        return redirect('commandes')
 
-
-
+    
+    
+    
 
 # View ProductFournisseur
 
@@ -437,7 +450,7 @@ class ProductFournisseurDetailView(DetailView):
     context_object_name = "productfournisseur"
     def get_context_data(self, **kwargs):
         context = super(ProductFournisseurDetailView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Détail fournisseur"
+        context['titremenu'] = "Détail produit de fournisseur"
         return context
 
 @method_decorator(login_required, name='dispatch')

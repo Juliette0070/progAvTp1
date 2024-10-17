@@ -2,8 +2,13 @@
 {% block title %}Detail Commande{% endblock %}
 {% load static %}
 {% block content %}
-    <a href="{% url 'commandes' %}"><img src="{% static 'img/back.png' %}" alt="Retour" style="width: 3rem; height: 3rem;"/></a>
-    <h1>{{ titremenu }}</h1>
+    <h1><a href="{% url 'commandes' %}"><img src="{% static 'img/back.png' %}" alt="Retour" style="width: 3rem; height: 3rem;"/></a> {{ titremenu }}</h1>
     <p><a href="{% url 'commande-update' commande.id %}">Modifier</a> - <a href="{% url 'commande-delete' commande.id %}">Supprimer</a></p>
-    <h2>{{ attribute.name }}</h2>
+    <h3>Produit : {{commande.product_fournisseur.product.name}}</h3>
+    <h3>Fournisseur : {{commande.product_fournisseur.fournisseur.name}}</h3>
+    <p>Date de la Commande : {{commande.date_commande}}</p>
+    <p>Prix Unitaire : {{ commande.product_fournisseur.prix }}€</p>
+    <p>Quantité : {{commande.quantity}}</p>
+    <p>Prix Total : {% widthratio commande.product_fournisseur.prix 1 commande.quantity %}€</p>
+    <p>Etat : {{ commande.get_status_display }}</p>
 {% endblock %}

@@ -2,8 +2,9 @@
 
 {% block title %}Detail Produit de Fournisseur{% endblock %}
 
+{% load static %}
 {% block content %}
-    <h1>{{ titremenu }}</h1>
+    <h1><a href="{% url 'productsfournisseurs' %}"><img src="{% static 'img/back.png' %}" alt="Retour" style="width: 3rem; height: 3rem;"/></a> {{ titremenu }}</h1>
     <p><a href="{% url 'productfournisseur-update' productfournisseur.id %}">Modifier</a> - <a href="{% url 'productfournisseur-delete' productfournisseur.id %}">Supprimer</a></p>
     <ul>
         <li>Fournisseur: <a href="{% url 'fournisseur-detail' productfournisseur.fournisseur.id %}">{{ productfournisseur.fournisseur.name }}</a></li>

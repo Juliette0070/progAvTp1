@@ -54,4 +54,4 @@ class ProductAttributeValueTestUrlRedirect(TestCase):
             'position': 2
         })
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('/appTp1/value/1/'))
+        self.assertRedirects(response, reverse('value-detail', args=[self.product_attribute.id]))

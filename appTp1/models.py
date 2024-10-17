@@ -52,8 +52,8 @@ class Commande(models.Model):
     Commande de produit
     """
     STATUS_CHOICES = (
-        (0, 'En Préparation'),
-        (1, 'Passée'),
+        (0, 'Passée'),
+        (1, 'En Préparation'),
         (2, 'Reçue'),
     )
     class Meta:

@@ -5,7 +5,7 @@
 <p><a href="{% url 'productfournisseur-add' %}">Créer un nouveau Product de Fournisseur</a></p>
 <ul>
     {% if productsfournisseurs|length == 0 %}
-        <li>Aucun product de fournisseur</li>
+        <li>Aucun produit de fournisseur</li>
     {% else %}
         {% for p in productsfournisseurs %}
             <li><a href="{% url 'productfournisseur-detail' p.id %}">{{p.product.name}} ({{p.fournisseur.name}})</a> ({{p.prix}}€)</li>

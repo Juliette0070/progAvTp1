@@ -14,15 +14,25 @@
         <th>Quantité</th>
         <th>Prix Total</th>
         <th>Etat</th>
+        <th>Passer à l'état suivant</th>
     </tr>
     {% for c in commandes %}
         <tr>
-            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';"">{{c.product_fournisseur.product.name}}</td>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{c.product_fournisseur.product.name}}</td>
             <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{c.product_fournisseur.fournisseur.name}}</td>
             <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{c.date_commande}}</td>
             <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{c.quantity}}</td>
             <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{% widthratio c.product_fournisseur.prix 1 c.quantity %}€</td>
-            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';">{{ c.get_status_display }}</td>
+            <td onclick="window.location.href = '{% url 'commande-detail' c.id %}';" 
+                style="background-color: 
+                    {% if c.etat == 0 %}
+                        orange;
+                    {% elif c.etat == 1 %}
+                        yellow;
+                    {% elif c.etat == 2 %}
+                        lime;
+                    {% endif %}">{{ c.get_status_display }}</td>
+            <td onclick="window.location.href = '{% url 'change-etat-commande' c.id %}';"><a href="{% url 'change-etat-commande' c.id %}">Changer l'état</a></td>
         </tr>
     {% endfor %}
 </table>

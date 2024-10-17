@@ -51,6 +51,7 @@ urlpatterns = [
     path('commande/add', views.CommandeCreateView.as_view(), name='commande-add'),
     path('commande/<pk>/update/', views.CommandeUpdateView.as_view(), name='commande-update'),
     path('commande/<pk>/delete/', views.CommandeDeleteView.as_view(), name='commande-delete'),
+    path('commande/<pk>/changeEtat/', views.CommandeChangeEtatView.as_view(), name='change-etat-commande'),
 
     path('productfournisseur/list', views.ProductFournisseurListView.as_view(), name='productsfournisseurs'),
     path('productfournisseur/<pk>/', views.ProductFournisseurDetailView.as_view(), name='productfournisseur-detail'),

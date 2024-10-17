@@ -368,6 +368,7 @@ class FournisseurDeleteView(DeleteView):
 
 # View Commande
 
+@method_decorator(login_required, name='dispatch')
 class CommandeListView(ListView):
     model = Commande
     template_name = "appTp1/list_commandes.html"
@@ -379,6 +380,7 @@ class CommandeListView(ListView):
         context['titremenu'] = "Liste des commandes"
         return context
 
+@method_decorator(login_required, name='dispatch')
 class CommandeDetailView(DetailView):
     model = Commande
     template_name = "appTp1/detail_commande.html"
@@ -387,7 +389,8 @@ class CommandeDetailView(DetailView):
         context = super(CommandeDetailView, self).get_context_data(**kwargs)
         context['titremenu'] = "Détail commande"
         return context
-    
+
+@method_decorator(login_required, name='dispatch')
 class CommandeCreateView(CreateView):
     model = Commande
     form_class = CommandeForm
@@ -395,7 +398,8 @@ class CommandeCreateView(CreateView):
     def form_valid(self, form:BaseModelForm)->HttpResponse:
         commande = form.save()
         return redirect('commande-detail', commande.id)
-    
+
+@method_decorator(login_required, name='dispatch')
 class CommandeUpdateView(UpdateView):
     model = Commande
     form_class = CommandeForm
@@ -403,7 +407,8 @@ class CommandeUpdateView(UpdateView):
     def form_valid(self, form:BaseModelForm)->HttpResponse:
         commande = form.save()
         return redirect('commande-detail', commande.id)
-    
+
+@method_decorator(login_required, name='dispatch')
 class CommandeDeleteView(DeleteView):
     model = Commande
     template_name = "appTp1/delete_commande.html"

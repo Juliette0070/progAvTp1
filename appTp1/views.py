@@ -8,12 +8,19 @@ from django.shortcuts import redirect
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
 
-from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductItemForm
-from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductItem
+from appTp1.forms import ContactUsForm, ProductAttributeForm, ProductAttributeValueForm, ProductForm, ProductFournisseurForm, ProductItemForm, FournisseurForm, CommandeForm
+from appTp1.models import Product, ProductAttribute, ProductAttributeValue, ProductFournisseur, ProductItem, Fournisseur, Commande
 
-# Create your views here.
 
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
+
+# View principales
+
+# Home
 class HomeView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -24,6 +31,8 @@ class HomeView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
+
+# About
 class AboutView(TemplateView):
     template_name = "appTp1/home.html"
     def get_context_data(self, **kwargs):
@@ -33,6 +42,8 @@ class AboutView(TemplateView):
     def post(self, request, **kwargs):
         return render(request, self.template_name)
 
+
+# Contact
 def ContactView(request):
     titreh1 = "Contact us!"
     if request.method == 'POST':
@@ -56,47 +67,13 @@ class EmailSentView(TemplateView):
         context['titreh1'] = "Email sent!"
         return context
 
-class ProductListView(ListView):
-    model = Product
-    template_name = "appTp1/list_products.html"
-    context_object_name = "prdcts"
-    def get_queryset(self):
-        return Product.objects.order_by('price_ttc')
-    def get_context_data(self, **kwargs):
-        context = super(ProductListView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Liste des produits"
-        return context
 
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = "appTp1/detail_product.html"
-    context_object_name = "product"
-    def get_context_data(self, **kwargs):
-        context = super(ProductDetailView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Détail produit"
-        context['declinaisons'] = ProductItem.objects.filter(product=self.object)
-        return context
 
-class ProductItemListView(ListView):
-    model = ProductItem
-    template_name = "appTp1/list_items.html"
-    context_object_name = "declinaisons"
-    def get_queryset(self):
-        return ProductItem.objects.order_by('code')
-    def get_context_data(self, **kwargs):
-        context = super(ProductItemListView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Liste des déclinaisons"
-        return context
 
-class ProductItemDetailView(DetailView):
-    model = ProductItem
-    template_name = "appTp1/detail_item.html"
-    context_object_name = "item"
-    def get_context_data(self, **kwargs):
-        context = super(ProductItemDetailView, self).get_context_data(**kwargs)
-        context['titremenu'] = "Détail déclinaison"
-        return context
 
+# View Authentification
+
+# Login
 class ConnectView(LoginView):
     template_name = "appTp1/login.html"
     def post(self, request, **kwargs):
@@ -128,6 +105,36 @@ class DisconnectView(TemplateView):
         logout(request)
         return render(request, self.template_name)
 
+
+
+
+
+#View CRUD Models
+
+# View Produit
+
+class ProductListView(ListView):
+    model = Product
+    template_name = "appTp1/list_products.html"
+    context_object_name = "prdcts"
+    def get_queryset(self):
+        return Product.objects.order_by('price_ttc')
+    def get_context_data(self, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des produits"
+        return context
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "appTp1/detail_product.html"
+    context_object_name = "product"
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail produit"
+        context['declinaisons'] = ProductItem.objects.filter(product=self.object)
+        return context
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
@@ -136,6 +143,7 @@ class ProductCreateView(CreateView):
         product = form.save()
         return redirect('product-detail', product.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
@@ -144,11 +152,40 @@ class ProductUpdateView(UpdateView):
         product = form.save()
         return redirect('product-detail', product.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductDeleteView(DeleteView):
     model = Product
     template_name = "appTp1/delete_product.html"
     success_url = reverse_lazy('products')
 
+
+
+
+
+
+# View ProductItems
+
+class ProductItemListView(ListView):
+    model = ProductItem
+    template_name = "appTp1/list_items.html"
+    context_object_name = "declinaisons"
+    def get_queryset(self):
+        return ProductItem.objects.order_by('code')
+    def get_context_data(self, **kwargs):
+        context = super(ProductItemListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des déclinaisons"
+        return context
+
+class ProductItemDetailView(DetailView):
+    model = ProductItem
+    template_name = "appTp1/detail_item.html"
+    context_object_name = "item"
+    def get_context_data(self, **kwargs):
+        context = super(ProductItemDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail déclinaison"
+        return context
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductItemCreateView(CreateView):
     model = ProductItem
     form_class = ProductItemForm
@@ -157,6 +194,7 @@ class ProductItemCreateView(CreateView):
         item = form.save()
         return redirect('item-detail', item.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductItemUpdateView(UpdateView):
     model = ProductItem
     form_class = ProductItemForm
@@ -165,10 +203,17 @@ class ProductItemUpdateView(UpdateView):
         item = form.save()
         return redirect('item-detail', item.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductItemDeleteView(DeleteView):
     model = ProductItem
     template_name = "appTp1/delete_item.html"
     success_url = reverse_lazy('items')
+
+
+
+
+
+# View ProductAttribute
 
 class ProductAttributeListView(ListView):
     model = ProductAttribute
@@ -190,6 +235,7 @@ class ProductAttributeDetailView(DetailView):
         context['titremenu'] = "Détail attribut"
         return context
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductAttributeCreateView(CreateView):
     model = ProductAttribute
     form_class = ProductAttributeForm
@@ -198,6 +244,7 @@ class ProductAttributeCreateView(CreateView):
         attribute = form.save()
         return redirect('attribute-detail', attribute.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductAttributeUpdateView(UpdateView):
     model = ProductAttribute
     form_class = ProductAttributeForm
@@ -206,10 +253,17 @@ class ProductAttributeUpdateView(UpdateView):
         attribute = form.save()
         return redirect('attribute-detail', attribute.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductAttributeDeleteView(DeleteView):
     model = ProductAttribute
     template_name = "appTp1/delete_attribute.html"
     success_url = reverse_lazy('attributes')
+
+
+
+
+
+# View ProductAttributeValue
 
 class ProductAttributeValueListView(ListView):
     model = ProductAttributeValue
@@ -231,6 +285,7 @@ class ProductAttributeValueDetailView(DetailView):
         context['titremenu'] = "Détail valeur"
         return context
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductAttributeValueCreateView(CreateView):
     model = ProductAttributeValue
     form_class = ProductAttributeValueForm
@@ -239,6 +294,7 @@ class ProductAttributeValueCreateView(CreateView):
         value = form.save()
         return redirect('value-detail', value.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductAttributeValueUpdateView(UpdateView):
     model = ProductAttributeValue
     form_class = ProductAttributeValueForm
@@ -247,7 +303,173 @@ class ProductAttributeValueUpdateView(UpdateView):
         value = form.save()
         return redirect('value-detail', value.id)
 
+@method_decorator(user_passes_test(admin_required), name='dispatch')
 class ProductAttributeValueDeleteView(DeleteView):
     model = ProductAttributeValue
     template_name = "appTp1/delete_value.html"
     success_url = reverse_lazy('values')
+
+
+
+
+
+# View Fournisseur
+
+class FournisseurListView(ListView):
+    model = Fournisseur
+    template_name = "appTp1/list_fournisseurs.html"
+    context_object_name = "fournisseurs"
+    def get_queryset(self):
+        return Fournisseur.objects.order_by('name')
+    def get_context_data(self, **kwargs):
+        context = super(FournisseurListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des fournisseurs"
+        return context
+
+class FournisseurDetailView(DetailView):
+    model = Fournisseur
+    template_name = "appTp1/detail_fournisseur.html"
+    context_object_name = "fournisseur"
+    def get_context_data(self, **kwargs):
+        context = super(FournisseurDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail fournisseur"
+        return context
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class FournisseurCreateView(CreateView):
+    model = Fournisseur
+    form_class = FournisseurForm
+    template_name = "appTp1/new_fournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        fournisseur = form.save()
+        return redirect('fournisseur-detail', fournisseur.id)
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class FournisseurUpdateView(UpdateView):
+    model = Fournisseur
+    form_class = FournisseurForm
+    template_name = "appTp1/update_fournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        fournisseur = form.save()
+        return redirect('fournisseur-detail', fournisseur.id)
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class FournisseurDeleteView(DeleteView):
+    model = Fournisseur
+    template_name = "appTp1/delete_fournisseur.html"
+    success_url = reverse_lazy('fournisseurs')
+
+
+
+
+
+# View Commande
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class CommandeListView(ListView):
+    model = Commande
+    template_name = "appTp1/list_commandes.html"
+    context_object_name = "commandes"
+    def get_queryset(self):
+        return Commande.objects.order_by('date_commande').reverse()
+    def get_context_data(self, **kwargs):
+        context = super(CommandeListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des commandes"
+        return context
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class CommandeDetailView(DetailView):
+    model = Commande
+    template_name = "appTp1/detail_commande.html"
+    context_object_name = "commande"
+    def get_context_data(self, **kwargs):
+        context = super(CommandeDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail commande"
+        return context
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class CommandeCreateView(CreateView):
+    model = Commande
+    form_class = CommandeForm
+    template_name = "appTp1/new_commande.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        commande = form.save()
+        return redirect('commande-detail', commande.id)
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class CommandeUpdateView(UpdateView):
+    model = Commande
+    form_class = CommandeForm
+    template_name = "appTp1/update_commande.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        commande = form.save()
+        return redirect('commande-detail', commande.id)
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class CommandeDeleteView(DeleteView):
+    model = Commande
+    template_name = "appTp1/delete_commande.html"
+    success_url = reverse_lazy('commandes')
+
+class CommandeChangeEtatView(View):
+    model = Commande
+    def get(self, request, pk):
+        commande = Commande.objects.get(pk=pk)
+        if commande.etat < 2:
+            print('hey listen')
+            commande.etat += 1
+            commande.save()
+            if commande.etat == 2:
+                commande.product_fournisseur.product.stock += commande.quantity
+                commande.product_fournisseur.product.save()
+        return redirect('commandes')
+
+    
+    
+    
+
+# View ProductFournisseur
+
+class ProductFournisseurListView(ListView):
+    model = ProductFournisseur
+    template_name = "appTp1/list_productsfournisseurs.html"
+    context_object_name = "productsfournisseurs"
+    def get_queryset(self):
+        return ProductFournisseur.objects.order_by('product')
+    def get_context_data(self, **kwargs):
+        context = super(ProductFournisseurListView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Liste des produits de fournisseurs"
+        return context
+
+class ProductFournisseurDetailView(DetailView):
+    model = ProductFournisseur
+    template_name = "appTp1/detail_productfournisseur.html"
+    context_object_name = "productfournisseur"
+    def get_context_data(self, **kwargs):
+        context = super(ProductFournisseurDetailView, self).get_context_data(**kwargs)
+        context['titremenu'] = "Détail produit de fournisseur"
+        return context
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class ProductFournisseurCreateView(CreateView):
+    model = ProductFournisseur
+    form_class = ProductFournisseurForm
+    template_name = "appTp1/new_productfournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        productfournisseur = form.save()
+        return redirect('productfournisseur-detail', productfournisseur.id)
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class ProductFournisseurUpdateView(UpdateView):
+    model = ProductFournisseur
+    form_class = ProductFournisseurForm
+    template_name = "appTp1/update_productfournisseur.html"
+    def form_valid(self, form:BaseModelForm)->HttpResponse:
+        productfournisseur = form.save()
+        return redirect('productfournisseur-detail', productfournisseur.id)
+
+@method_decorator(user_passes_test(admin_required), name='dispatch')
+class ProductFournisseurDeleteView(DeleteView):
+    model = ProductFournisseur
+    template_name = "appTp1/delete_productfournisseur.html"
+    success_url = reverse_lazy('productsfournisseurs')

@@ -13,19 +13,27 @@
         {% block nav %}
         <nav>
             <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'home' name='you' %}">Hello</a></li>
-                <li><a href="{% url 'contact' %}">Contact</a></li>
-                <li><a href="{% url 'about' %}">About</a></li>
-                <li><a href="{% url 'products' %}">Products</a></li>
-                <li><a href="{% url 'items' %}">Items</a></li>
-                <li><a href="{% url 'attributes' %}">Attributes</a></li>
-                <li><a href="{% url 'values' %}">Values</a></li>
+                <!--
+                    <li><a href="{% url 'home' name='you' %}">Hello</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <a href="{% url 'items' %}"><li>Items</li></a>
+                    <a href="{% url 'attributes' %}"><li>Attributes</li></a>
+                    <a href="{% url 'values' %}"><li>Values</li></a>
+                    <a href="{% url 'productsfournisseurs' %}"><li>Produits Fournisseurs</li></a>
+                -->
+                <a href="{% url 'home' %}"><li>Accueil</li></a>
+                <a href="{% url 'contact' %}"><li>Contact</li></a>
+                <a href="{% url 'products' %}"><li>Produits</li></a>
+                <a href="{% url 'fournisseurs' %}"><li>Fournisseurs</li></a>
+                <a href="{% url 'productsfournisseurs' %}"><li>Produits de Fournisseurs</li></a>
+                {% if user.is_staff %}
+                <a href="{% url 'commandes' %}"><li>Commandes</li></a>
+                {% endif %}
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <a href="{% url 'logout' %}"><li>Déconnexion</li></a>
                 {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                <a href="{% url 'login' %}"><li>Connexion</li></a>
+                <a href="{% url 'register' %}"><li>Inscription</li></a>
                 {% endif %}
             </ul>
         </nav>

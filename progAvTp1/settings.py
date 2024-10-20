@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'progAvTp1.urls'
@@ -138,4 +138,5 @@ INTERNAL_IPS = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
- 
+
+LOGIN_URL = '/appTp1/login/'

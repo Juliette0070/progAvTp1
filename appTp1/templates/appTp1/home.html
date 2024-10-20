@@ -1,4 +1,12 @@
 {% extends 'appTp1/base.html' %}
 {% block content %}
 <h1>{{ titreh1 }}</h1>
+
+<ul>
+    <a href="{% url 'home' name='you' %}"><li>Hello</li></a>
+    <a href="{% url 'about' %}"><li>About</li></a>
+    <a href="{% url 'items' %}"><li>Items</li></a>
+    <a href="{% url 'attributes' %}"><li>Attributes</li></a>
+    <a href="{% url 'values' %}"><li>Values</li></a>
+</ul>
 {% endblock %}

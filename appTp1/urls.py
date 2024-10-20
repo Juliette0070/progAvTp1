@@ -39,4 +39,23 @@ urlpatterns = [
     path('value/add', views.ProductAttributeValueCreateView.as_view(), name='value-add'),
     path('value/<pk>/update/', views.ProductAttributeValueUpdateView.as_view(), name='value-update'),
     path('value/<pk>/delete/', views.ProductAttributeValueDeleteView.as_view(), name='value-delete'),
+
+    path('fournisseur/list', views.FournisseurListView.as_view(), name='fournisseurs'),
+    path('fournisseur/<pk>/', views.FournisseurDetailView.as_view(), name='fournisseur-detail'),
+    path('fournisseur/add', views.FournisseurCreateView.as_view(), name='fournisseur-add'),
+    path('fournisseur/<pk>/update/', views.FournisseurUpdateView.as_view(), name='fournisseur-update'),
+    path('fournisseur/<pk>/delete/', views.FournisseurDeleteView.as_view(), name='fournisseur-delete'),
+
+    path('commande/list', views.CommandeListView.as_view(), name='commandes'),
+    path('commande/<pk>/', views.CommandeDetailView.as_view(), name='commande-detail'),
+    path('commande/add', views.CommandeCreateView.as_view(), name='commande-add'),
+    path('commande/<pk>/update/', views.CommandeUpdateView.as_view(), name='commande-update'),
+    path('commande/<pk>/delete/', views.CommandeDeleteView.as_view(), name='commande-delete'),
+    path('commande/<pk>/changeEtat/', views.CommandeChangeEtatView.as_view(), name='change-etat-commande'),
+
+    path('productfournisseur/list', views.ProductFournisseurListView.as_view(), name='productsfournisseurs'),
+    path('productfournisseur/<pk>/', views.ProductFournisseurDetailView.as_view(), name='productfournisseur-detail'),
+    path('productfournisseur/add', views.ProductFournisseurCreateView.as_view(), name='productfournisseur-add'),
+    path('productfournisseur/<pk>/update/', views.ProductFournisseurUpdateView.as_view(), name='productfournisseur-update'),
+    path('productfournisseur/<pk>/delete/', views.ProductFournisseurDeleteView.as_view(), name='productfournisseur-delete'),
 ]

@@ -8,17 +8,9 @@ PRODUCT_STATUS = (
     (2, 'Out of stock')              
 )
 
-# Create your models here.
-"""
-    Status : numero, libelle
-"""
-class Status(models.Model):
-    numero  = models.IntegerField()
-    libelle = models.CharField(max_length=100)
-          
-    def __str__(self):
-        return "{0} {1}".format(self.numero, self.libelle)
-    
+
+
+
 """
 Produit : nom, code, etc.
 """
@@ -32,10 +24,83 @@ class Product(models.Model):
     price_ht      = models.DecimalField(max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name="Prix unitaire HT")
     price_ttc     = models.DecimalField(max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name="Prix unitaire TTC")
     status        = models.SmallIntegerField(choices=PRODUCT_STATUS, default=0)
-    date_creation =  models.DateTimeField(blank=True, verbose_name="Date création", default=timezone.now) 
-    
+    date_creation = models.DateTimeField(blank=True, verbose_name="Date création", default=timezone.now) 
+    stock         = models.IntegerField(default=0)
+
     def __str__(self):
         return "{0} {1}".format(self.name, self.code)
+
+
+
+class Fournisseur(models.Model):
+    """
+    Fournisseur de produit
+    """
+    
+    class Meta:
+        verbose_name = "Fournisseur"
+        
+    name               = models.CharField(max_length=100)
+
+
+    def __str__(self):
+        return "{0}".format(self.name)
+    
+
+class Commande(models.Model):
+    """
+    Commande de produit
+    """
+    STATUS_CHOICES = (
+        (0, 'Passée'),
+        (1, 'En Préparation'),
+        (2, 'Reçue'),
+    )
+    class Meta:
+        verbose_name = "Commande"
+        
+    date_commande       = models.DateTimeField("Date commande", default=timezone.now)
+    product_fournisseur = models.ForeignKey('ProductFournisseur', on_delete=models.CASCADE)
+    quantity            = models.IntegerField(default=0)
+    etat                = models.SmallIntegerField(choices=STATUS_CHOICES, default=0)
+
+    def get_status_display(self):
+        return dict(self.STATUS_CHOICES).get(self.etat, 'Unknown')
+
+    def __str__(self):
+        return "{0} {1}".format(self.quantity, self.product_fournisseur)
+    
+
+class ProductFournisseur(models.Model):
+    """
+    Produit fourni par un fournisseur
+    """
+    
+    class Meta:
+        verbose_name = "Produit Fournisseur"
+        
+    product            = models.ForeignKey('Product', on_delete=models.CASCADE)
+    fournisseur        = models.ForeignKey('Fournisseur', on_delete=models.CASCADE)
+    prix               = models.DecimalField(max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name="Prix")
+
+    def __str__(self):
+        return "{0}: {1} ({2}€)".format(self.fournisseur, self.product.name, self.prix)
+    
+
+
+# Inutile pour le TP noté
+
+"""
+    Status : numero, libelle
+"""
+class Status(models.Model):
+    numero  = models.IntegerField()
+    libelle = models.CharField(max_length=100)
+          
+    def __str__(self):
+        return "{0} {1}".format(self.numero, self.libelle)
+    
+
 
 """
     Déclinaison de produit déterminée par des attributs comme la couleur, etc.
@@ -52,6 +117,7 @@ class ProductItem(models.Model):
     def __str__(self):
         return "{0}".format(self.code)
     
+
 class ProductAttribute(models.Model):
     """
     Attributs produit

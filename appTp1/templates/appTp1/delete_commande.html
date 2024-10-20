@@ -1,0 +1,12 @@
+{% extends 'appTp1/base.html' %}
+
+{% block title %}Delete Commande{% endblock %}
+
+{% block content %}
+    <h2>{{ commande.name }}</h2>
+    <p>Voulez-vous vraiment supprimer cette commande ?</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success mt-2">Supprimer</button>
+    </form>
+{% endblock %}
